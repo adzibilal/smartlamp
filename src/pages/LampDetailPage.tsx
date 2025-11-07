@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import { ArrowLeft, Lightbulb, Zap, Activity, Calendar } from "lucide-react";
 import { dataService } from "../services/dataService";
 import { realtimeService } from "../services/realtime";
-import { KpiGrid } from "../components/KpiGrid";
 import { StatsCard } from "../components/StatsCard";
 import { TimeSeriesChart } from "../components/TimeSeriesChart";
 import { StatusBadge } from "../components/StatusBadge";
@@ -47,10 +46,10 @@ export function LampDetailPage() {
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="text-center">
-          <p className="text-zinc-600">Lampu tidak ditemukan</p>
+          <p className="text-zinc-600 dark:text-zinc-400">Lampu tidak ditemukan</p>
           <Link
             to="/"
-            className="text-emerald-600 hover:underline mt-2 inline-block"
+            className="text-emerald-600 dark:text-emerald-400 hover:underline mt-2 inline-block"
           >
             Kembali ke Dashboard
           </Link>
@@ -69,17 +68,17 @@ export function LampDetailPage() {
       <div>
         <button
           onClick={() => navigate(`/areas/${lampData.areaId}`)}
-          className="flex items-center space-x-2 text-zinc-600 hover:text-zinc-900 mb-4"
+          className="flex items-center space-x-2 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white mb-4 transition"
         >
           <ArrowLeft className="w-4 h-4" />
           <span className="text-sm">Kembali ke {area?.name}</span>
         </button>
         <div className="flex items-start justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-zinc-900">
+            <h1 className="text-3xl font-bold text-zinc-900 dark:text-white">
               {lampData.name}
             </h1>
-            <p className="text-zinc-600 mt-1">
+            <p className="text-zinc-600 dark:text-zinc-400 mt-1">
               Monitoring detail PJU di {area?.name}
             </p>
           </div>
@@ -88,52 +87,55 @@ export function LampDetailPage() {
       </div>
 
       {/* Status and KPIs */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-white rounded-xl border border-zinc-200 shadow-sm p-6">
-          <h3 className="text-sm font-medium text-zinc-700 mb-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Status Card - Full width on mobile, 1 column on desktop */}
+        <div className="bg-white dark:bg-zinc-800 rounded-xl border border-zinc-200 dark:border-zinc-700 shadow-sm p-6 transition-colors">
+          <h3 className="text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-4">
             Status Lampu
           </h3>
-          <div className="flex items-center justify-between">
+          <div className="space-y-4">
             <StatusBadge status={lampData.status} />
-            <div className="text-right">
-              <div className="text-xs text-zinc-500">Lokasi</div>
-              <div className="text-sm text-zinc-900">
+            <div>
+              <div className="text-xs text-zinc-500 dark:text-zinc-400 mb-1">Lokasi</div>
+              <div className="text-sm text-zinc-900 dark:text-zinc-100 font-mono">
                 {lampData.location[0].toFixed(6)}, {lampData.location[1].toFixed(6)}
               </div>
             </div>
           </div>
         </div>
 
-        <KpiGrid>
-          <StatsCard
-            title="Arus"
-            value={lampData.currentA.toFixed(2)}
-            unit="A"
-            icon={<Activity className="w-5 h-5 text-emerald-600" />}
-          />
-          <StatsCard
-            title="Daya"
-            value={lampData.powerW.toFixed(1)}
-            unit="W"
-            icon={<Zap className="w-5 h-5 text-emerald-600" />}
-          />
-        </KpiGrid>
+        {/* Arus Card */}
+        <StatsCard
+          title="Arus"
+          value={lampData.currentA.toFixed(2)}
+          unit="A"
+          icon={<Activity className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />}
+        />
+
+        {/* Daya Card */}
+        <StatsCard
+          title="Daya"
+          value={lampData.powerW.toFixed(1)}
+          unit="W"
+          icon={<Zap className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />}
+        />
       </div>
 
-      <KpiGrid>
+      {/* Secondary KPIs */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <StatsCard
           title="Konsumsi Bulanan"
           value={lampData.monthlyKWh.toFixed(2)}
           unit="kWh"
-          icon={<Lightbulb className="w-6 h-6 text-emerald-600" />}
+          icon={<Lightbulb className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />}
         />
         <StatsCard
           title="Estimasi Biaya"
           value={(lampData.monthlyKWh * 1.5).toFixed(0)}
           unit="IDR (x1000)"
-          icon={<Calendar className="w-6 h-6 text-emerald-600" />}
+          icon={<Calendar className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />}
         />
-      </KpiGrid>
+      </div>
 
       {/* Hourly Chart */}
       <div>
@@ -147,29 +149,29 @@ export function LampDetailPage() {
 
       {/* Daily Log */}
       <div>
-        <h2 className="text-xl font-semibold text-zinc-900 mb-4">
+        <h2 className="text-xl font-semibold text-zinc-900 dark:text-white mb-4">
           Log Harian (7 Hari Terakhir)
         </h2>
-        <div className="bg-white rounded-xl border border-zinc-200 shadow-sm overflow-hidden">
+        <div className="bg-white dark:bg-zinc-800 rounded-xl border border-zinc-200 dark:border-zinc-700 shadow-sm overflow-hidden transition-colors">
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-zinc-50 border-b border-zinc-200">
+              <thead className="bg-zinc-50 dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-700">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
                     Tanggal
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
                     Status
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
                     Konsumsi
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-zinc-200">
+              <tbody className="divide-y divide-zinc-200 dark:divide-zinc-700">
                 {dailyLog.map((log, idx) => (
-                  <tr key={idx} className="hover:bg-zinc-50 transition">
-                    <td className="px-6 py-4 text-sm text-zinc-900">
+                  <tr key={idx} className="hover:bg-zinc-50 dark:hover:bg-zinc-700 transition">
+                    <td className="px-6 py-4 text-sm text-zinc-900 dark:text-zinc-100">
                       {new Date(log.date).toLocaleDateString("id-ID", {
                         weekday: "long",
                         year: "numeric",
@@ -181,14 +183,14 @@ export function LampDetailPage() {
                       <span
                         className={`inline-flex px-2 py-1 rounded text-xs font-medium ${
                           log.status === "Normal"
-                            ? "bg-green-100 text-green-800"
-                            : "bg-amber-100 text-amber-800"
+                            ? "bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200"
+                            : "bg-amber-100 dark:bg-amber-900 text-amber-800 dark:text-amber-200"
                         }`}
                       >
                         {log.status}
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-sm text-zinc-900">
+                    <td className="px-6 py-4 text-sm text-zinc-900 dark:text-zinc-100">
                       {log.kWh.toFixed(2)} kWh
                     </td>
                   </tr>

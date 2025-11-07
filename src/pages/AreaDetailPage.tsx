@@ -26,10 +26,10 @@ export function AreaDetailPage() {
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="text-center">
-          <p className="text-zinc-600">Kawasan tidak ditemukan</p>
+          <p className="text-zinc-600 dark:text-zinc-400">Kawasan tidak ditemukan</p>
           <Link
             to="/"
-            className="text-emerald-600 hover:underline mt-2 inline-block"
+            className="text-emerald-600 dark:text-emerald-400 hover:underline mt-2 inline-block"
           >
             Kembali ke Dashboard
           </Link>
@@ -72,13 +72,13 @@ export function AreaDetailPage() {
       <div>
         <button
           onClick={() => navigate("/")}
-          className="flex items-center space-x-2 text-zinc-600 hover:text-zinc-900 mb-4"
+          className="flex items-center space-x-2 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white mb-4 transition"
         >
           <ArrowLeft className="w-4 h-4" />
           <span className="text-sm">Kembali ke Dashboard</span>
         </button>
-        <h1 className="text-3xl font-bold text-zinc-900">{area.name}</h1>
-        <p className="text-zinc-600 mt-1">
+        <h1 className="text-3xl font-bold text-zinc-900 dark:text-white">{area.name}</h1>
+        <p className="text-zinc-600 dark:text-zinc-400 mt-1">
           Detail monitoring PJU di {area.name}
         </p>
       </div>
@@ -89,31 +89,31 @@ export function AreaDetailPage() {
           title="Jumlah Lampu"
           value={areaStats.totalLamps}
           unit="unit"
-          icon={<Lightbulb className="w-6 h-6 text-emerald-600" />}
+          icon={<Lightbulb className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />}
         />
         <StatsCard
           title="Total Daya"
           value={areaStats.totalKWh.toFixed(2)}
           unit="kWh"
-          icon={<Zap className="w-6 h-6 text-emerald-600" />}
+          icon={<Zap className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />}
         />
         <StatsCard
           title="Arus Rata-rata"
           value={areaStats.avgCurrentA.toFixed(2)}
           unit="A"
-          icon={<Activity className="w-6 h-6 text-emerald-600" />}
+          icon={<Activity className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />}
         />
         <StatsCard
           title="Status"
           value={`${areaStats.activeLamps}/${areaStats.totalLamps}`}
           unit="aktif"
-          icon={<Power className="w-6 h-6 text-emerald-600" />}
+          icon={<Power className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />}
         />
       </KpiGrid>
 
       {/* Map */}
       <div>
-        <h2 className="text-xl font-semibold text-zinc-900 mb-4">
+        <h2 className="text-xl font-semibold text-zinc-900 dark:text-white mb-4">
           Peta Lokasi PJU
         </h2>
         <MapView
@@ -139,7 +139,7 @@ export function AreaDetailPage() {
 
       {/* Lamp Table */}
       <div>
-        <h2 className="text-xl font-semibold text-zinc-900 mb-4">
+        <h2 className="text-xl font-semibold text-zinc-900 dark:text-white mb-4">
           Data Lampu PJU
         </h2>
         <DataTable
